@@ -109,11 +109,29 @@ public class FinchActionList {
   }
   
   public void execute(String seconds) {
-	  
+      int pause = Integer.parseInt(seconds) * 1000;
+      
+      for (FinchAction action : actions) {
+          action.execute();
+          try {
+              Thread.sleep(pause);
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+      }
   }
   
   public void executeOrder(String order) {
-	  
+	  try {
+          int index = Integer.parseInt(order);
+          if (index >= 0 && index < actions.size()) {
+              actions.get(index).execute();
+          } else {
+              System.err.println("Índice fuera de rango");
+          }
+      } catch (NumberFormatException e) {
+          System.err.println("Debe proporcionar un número de orden");
+      }
   }
 
 }

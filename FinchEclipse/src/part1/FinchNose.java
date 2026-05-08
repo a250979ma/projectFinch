@@ -19,11 +19,12 @@ public class FinchNose extends FinchAction {
  }
 
  public void execute() {
+	 
  }
  
  @Override
  public String toString() {
-  return null;
+     return "FinchNose{action=" + getAction() + "}";
  }
 
 }
