@@ -10,6 +10,8 @@
  */
 
 package part1;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import finchRobot.Finch;
 
 public class FinchMove extends FinchAction {
@@ -19,7 +21,11 @@ public class FinchMove extends FinchAction {
  }
 
  public void execute() {
-  
+	    String[] parts = getAction().split(" ");
+	    int duration = Integer.parseInt(parts[0]);
+	    int leftVelocity = Integer.parseInt(parts[1]);
+	    int rightVelocity = Integer.parseInt(parts[2]);
+	    getFinch().setWheelVelocities(leftVelocity, rightVelocity, duration);
  }
  
  @Override
