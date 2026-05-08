@@ -19,20 +19,17 @@ public class FinchMove extends FinchAction {
  public FinchMove(String action, Finch finch) {
   super(action, finch); 
  }
-
  public void execute() {
-	    String[] parts = getAction().split(" ");
-	    int duration = Integer.parseInt(parts[0]);
-	    int leftVelocity = Integer.parseInt(parts[1]);
-	    int rightVelocity = Integer.parseInt(parts[2]);
+	    String[] parts = this.getAction().split(" ");
+	    int duration = Integer.parseInt(parts[1]);
+	    int leftVelocity = Integer.parseInt(parts[2]);
+	    int rightVelocity = Integer.parseInt(parts[3]);
 	    getFinch().setWheelVelocities(leftVelocity, rightVelocity, duration);
- }
- 
- @Override
- public String toString() {
-  // TO DO
-  return null;
- }
- 
+	    
+	}
 
+	@Override
+	public String toString() {
+	    return this.getAction();
+	}
 }

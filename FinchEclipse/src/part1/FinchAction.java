@@ -25,6 +25,9 @@ public abstract class  FinchAction  {
  public String getAction() {
   return action;
  }
+ public Finch getFinch(){
+	 return this.finch;
+ }
     
  public abstract void execute();
  

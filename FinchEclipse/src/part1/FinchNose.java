@@ -19,12 +19,15 @@ public class FinchNose extends FinchAction {
  }
 
  public void execute() {
-	 
- }
- 
- @Override
- public String toString() {
-     return "FinchNose{action=" + getAction() + "}";
- }
+	    String[] parts = getAction().split(" ");
+	    int red = Integer.parseInt(parts[1]);
+	    int green = Integer.parseInt(parts[2]);
+	    int blue = Integer.parseInt(parts[3]);
+	    getFinch().setLED(red, green, blue);
+	}
 
+	@Override
+	public String toString() {
+	    return this.getAction();
+	}
 }

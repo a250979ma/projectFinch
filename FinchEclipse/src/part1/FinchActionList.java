@@ -63,75 +63,65 @@ public class FinchActionList {
 	  }
 	  
   }
-  
-  public void importOrders(){
-	  actions = new ArrayList<FinchAction>();
+  public void importOrders() {
+	    actions = new ArrayList<FinchAction>();
 	    
-	    Reader reader = new Reader(fileName);
-	    String line;
-	    while ((line = reader.readLine()) != null) {
-	        String[] parts = line.trim().split("\\s+");
-	        
-	        if (parts[0].equals("MOVE")) {
-	            String actionData = parts[1] + " " + parts[2] + " " + parts[3];
-	            FinchMove move = new FinchMove(actionData, finch);
-	            actions.add(move);
-	        } 
-	        else if (parts[0].equals("NOSE")) {
-	            String actionData = parts[1] + " " + parts[2] + " " + parts[3];
-	            FinchNose nose = new FinchNose(actionData, finch);
-	            actions.add(nose);
+	    File file = new File(fileName);
+	    if (file.exists()) {
+	        Reader reader = new Reader(fileName);
+	        String line = reader.readLine();
+	        while (line != null) {
+	            if (line.startsWith("MOVE")) {
+	                FinchMove move = new FinchMove(line, finch);
+	                actions.add(move);
+	            } else if (line.startsWith("NOSE")) {
+	                FinchNose nose = new FinchNose(line, finch);
+	                actions.add(nose);
+	            }
+	            line = reader.readLine();
 	        }
+	        reader.close();
 	    }
-	    reader.close();
-  
-  }
-  
-  public void exportOrders(){
-	  Writer writer = new Writer(fileName);
+	}
+
+	public void exportOrders() {
+	    Writer writer = new Writer(fileName);
 	    for (FinchAction a : actions) {
 	        writer.println(a.toString());
 	    }
 	    writer.close();
-	  
-  }
-  
-  public void displayOrders(){
-	   System.out.println("=== Llista d'ordres ===");
-	   for (int i = 0; i < actions.size(); i++) {
-		   System.out.println((i+1) + ". " + actions.get(i).toString());
-	   }
-	   System.out.println("========================");
-  }
-  
-  public void removeOrders(){
-	  this.actions.clear();
-  }
-  
-  public void execute(String seconds) {
-      int pause = Integer.parseInt(seconds) * 1000;
-      
-      for (FinchAction action : actions) {
-          action.execute();
-          try {
-              Thread.sleep(pause);
-          } catch (InterruptedException e) {
-              e.printStackTrace();
-          }
-      }
-  }
-  
-  public void executeOrder(String order) {
-	  try {
-          int index = Integer.parseInt(order);
-          if (index >= 0 && index < actions.size()) {
-              actions.get(index).execute();
-          } else {
-              System.err.println("Índice fuera de rango");
-          }
-      } catch (NumberFormatException e) {
-          System.err.println("Debe proporcionar un número de orden");
-      }
-  }
+	}
+
+	public void displayOrders() {
+	    for (FinchAction a : actions) {
+	        System.out.println(a.toString());
+	    }
+	}
+
+	public void removeOrders() {
+	    actions.clear();
+	}
+
+	public void execute(String seconds) {
+	    int pause = Integer.parseInt(seconds);
+	    for (FinchAction a : actions) {
+	        a.execute();
+	        finch.sleep(pause);
+	    }
+	}
+
+	public void executeOrder(String order) {
+	    String[] lines = order.split("\n");
+	    for (String line : lines) {
+	        if (line.startsWith("MOVE")) {
+	            FinchMove move = new FinchMove(line, finch);
+	            move.execute();
+	        } else if (line.startsWith("NOSE")) {
+	            FinchNose nose = new FinchNose(line, finch);
+	            nose.execute();
+	        }
+	    }
+	}
 
 }
+
